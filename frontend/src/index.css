@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+@theme {
+  --color-accent: #0f766e; /* Muted teal */
+  --color-accent-hover: #115e59; /* Muted teal dark */
+  --color-accent-light: #f0fdfa;
+  --color-accent-border: #ccfbf1;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-neutral-50 text-neutral-900 dark:bg-neutral-950 dark:text-neutral-50 font-sans antialiased selection:bg-teal-100 selection:text-teal-900;
+  }
+}
+
+/* Custom minimal scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #e5e5e5;
+  @apply dark:bg-neutral-800;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #d4d4d4;
+  @apply dark:bg-neutral-700;
+}
+
+/* Glassmorphism/Card styles */
+.card-premium {
+  @apply bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 rounded-[12px] p-6 transition-all duration-200;
+}
+
+/* Custom interactive animation for links and list items */
+.nav-item-active {
+  @apply bg-neutral-100 dark:bg-neutral-900 text-neutral-900 dark:text-neutral-50 font-medium;
+}
+.nav-item-inactive {
+  @apply text-neutral-500 hover:bg-neutral-50 dark:hover:bg-neutral-900 hover:text-neutral-900 dark:hover:text-neutral-50;
+}
