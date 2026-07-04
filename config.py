@@ -38,7 +38,7 @@ try:
         EMBEDDING_DIMENSIONS=int(os.getenv("EMBEDDING_DIMENSIONS", "3072")),
         EMBEDDING_API_KEY=os.getenv("EMBEDDING_API_KEY", llm_api_key),
         COGNEE_SKIP_CONNECTION_TEST=os.getenv("COGNEE_SKIP_CONNECTION_TEST", "true"),
-        DATABASE_URL=os.getenv("DATABASE_URL", "sqlite:///./bug_memory.db"),
+        DATABASE_URL=os.getenv("DATABASE_URL", "sqlite:////tmp/bug_memory.db" if os.getenv("VERCEL") else "sqlite:///./bug_memory.db"),
         DEBUG=os.getenv("DEBUG", "false").lower() in ("true", "1"),
     )
 except Exception as e:
