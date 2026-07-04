@@ -5,14 +5,14 @@ import { api } from './lib/api';
 import type { ProjectListItem } from './lib/api';
 import { subscribeToToasts, showToast } from './lib/toast';
 import type { Toast } from './lib/toast';
-import { Sidebar } from './components/Sidebar';
-import { Dashboard } from './components/Dashboard';
-import { FindABug } from './components/FindABug';
-import { MemoryGraph } from './components/MemoryGraph';
-import { Projects } from './components/Projects';
-import { Auth } from './components/Auth';
-import { LandingPage } from './components/LandingPage';
-import { CommandPalette } from './components/CommandPalette';
+const Sidebar = React.lazy(() => import('./components/Sidebar').then(m => ({ default: m.Sidebar })));
+const Dashboard = React.lazy(() => import('./components/Dashboard').then(m => ({ default: m.Dashboard })));
+const FindABug = React.lazy(() => import('./components/FindABug').then(m => ({ default: m.FindABug })));
+const MemoryGraph = React.lazy(() => import('./components/MemoryGraph').then(m => ({ default: m.MemoryGraph })));
+const Projects = React.lazy(() => import('./components/Projects').then(m => ({ default: m.Projects })));
+const Auth = React.lazy(() => import('./components/Auth').then(m => ({ default: m.Auth })));
+const LandingPage = React.lazy(() => import('./components/LandingPage').then(m => ({ default: m.LandingPage })));
+const CommandPalette = React.lazy(() => import('./components/CommandPalette').then(m => ({ default: m.CommandPalette })));
 
 export default function App() {
   const [user, setUser] = useState<{ email: string; name: string } | null>(null);
@@ -151,7 +151,7 @@ export default function App() {
     }
   };
 
-  // Switch tabs
+  // Switch tabs — wrapped in Suspense for lazy-loaded components
   const renderContent = () => {
     switch (activeTab) {
       case 'dashboard':
@@ -189,11 +189,13 @@ export default function App() {
     if (showAuthForm) {
       return (
         <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 relative">
+          <React.Suspense fallback={<div className="flex items-center justify-center min-h-screen"><span className="text-neutral-400 text-sm">Loading...</span></div>}>
           <Auth 
             onLoginSuccess={handleLoginSuccess} 
             onBackToHome={() => setShowAuthForm(false)}
           />
           
+          </React.Suspense>
           {/* Floating Toast notifications on auth screen */}
           <div className="fixed top-6 right-6 z-50 flex flex-col gap-3 max-w-sm w-full pointer-events-none">
             <AnimatePresence>
@@ -237,12 +239,15 @@ export default function App() {
     }
 
     return (
-      <LandingPage onLoginTrigger={() => setShowAuthForm(true)} />
+      <React.Suspense fallback={<div className="flex items-center justify-center min-h-screen"><span className="text-neutral-400 text-sm">Loading...</span></div>}>
+        <LandingPage onLoginTrigger={() => setShowAuthForm(true)} />
+      </React.Suspense>
     );
   }
 
   // RENDER APP MAIN SHELL
   return (
+    <React.Suspense fallback={<div className="flex items-center justify-center min-h-screen"><span className="text-neutral-400 text-sm">Loading...</span></div>}>
     <div className="min-h-screen bg-neutral-50 flex dark:bg-neutral-950">
       {/* Navigation Sidebar */}
       <Sidebar
@@ -423,5 +428,6 @@ export default function App() {
         </div>
       )}
     </div>
+    </React.Suspense>
   );
 }
