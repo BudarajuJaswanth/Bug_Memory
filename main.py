@@ -46,10 +46,18 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# CORS configuration for Cognee memory hackathon React frontend
+# CORS configuration — reads FRONTEND_URL env var for production (e.g. Vercel URL)
+_frontend_url = os.getenv("FRONTEND_URL", "")
+_allowed_origins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
+if _frontend_url:
+    _allowed_origins.append(_frontend_url)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=_allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
