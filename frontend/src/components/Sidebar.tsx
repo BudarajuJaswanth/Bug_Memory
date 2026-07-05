@@ -153,7 +153,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
       {/* Footer Details */}
       <div className="p-3 border-t border-neutral-200/80 dark:border-neutral-800/80 text-[10px] text-neutral-400 dark:text-neutral-500 font-mono text-center bg-white dark:bg-neutral-950">
-        v1.0.0 · Localhost:8000
+        v1.0.0 · {import.meta.env.VITE_API_URL ? new URL(import.meta.env.VITE_API_URL).hostname : 'localhost:8000'}
       </div>
     </div>
   );
